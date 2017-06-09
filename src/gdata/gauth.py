@@ -282,8 +282,7 @@ class ClientLoginToken(object):
         self.token_string = token_string
 
     def modify_request(self, http_request):
-        http_request.headers['Authorization'] = '%s%s' % (PROGRAMMATIC_AUTH_LABEL,
-                                                          self.token_string)
+        http_request.headers['Authorization'] = '{}{}'.format(PROGRAMMATIC_AUTH_LABEL, str(self.token_string, 'ascii'))
 
     ModifyRequest = modify_request
 

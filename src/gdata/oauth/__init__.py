@@ -1,5 +1,6 @@
 import binascii
 import cgi
+import hashlib
 import hmac
 import random
 import time
@@ -75,8 +76,7 @@ class OAuthToken(object):
     # return a token from something like:
     # oauth_token_secret=digg&oauth_token=digg
     def from_string(s):
-        # noinspection PyDeprecation
-        params = cgi.parse_qs(s, keep_blank_values=False)
+        params = urllib.parse.parse_qs(s, keep_blank_values = False)
         key = params['oauth_token'][0]
         secret = params['oauth_token_secret'][0]
         return OAuthToken(key, secret)
@@ -143,25 +143,36 @@ class OAuthRequest(object):
 
     # serialize as post data for a POST request
     def to_postdata(self):
-        return '&'.join(['%s=%s' % (escape(str(k)), escape(str(v))) for k, v in self.parameters.items()])
+        return '&'.join(self._parameters())
 
     # serialize as a url for a GET request
     def to_url(self):
         return '%s?%s' % (self.get_normalized_http_url(), self.to_postdata())
 
+    def _parameters(self, exclude = set(), filter = None, format = '{esc_key}={esc_value}'):
+        for key, value in self.parameters.items():
+            if key in exclude:
+                continue
+
+            if filter and not filter(key):
+                continue
+
+            if isinstance(value, bytes):
+                value = value.decode('ascii')
+            else:
+                value = str(value)
+
+            esc_value = escape(value)
+
+            yield format.format(key = key, esc_key = escape(key),
+                        value = value, esc_value = esc_value)
+        raise StopIteration
+
     # return a string that consists of all the parameters that need to be signed
     def get_normalized_parameters(self):
-        params = self.parameters
-        try:
-            # exclude the signature if it exists
-            del params['oauth_signature']
-        except:
-            pass
-        key_values = list(params.items())
-        # sort lexicographically, first after key, then after value
-        key_values.sort()
+        sorted_params = sorted(self._parameters(exclude = set(['oauth_signature'])))
         # combine key value pairs in string and escape
-        return '&'.join(['%s=%s' % (escape(str(k)), escape(str(v))) for k, v in key_values])
+        return '&'.join(sorted_params)
 
     # just uppercases the http method
     def get_normalized_http_method(self):
@@ -187,6 +198,7 @@ class OAuthRequest(object):
         # call the build signature method within the signature method
         return signature_method.build_signature(self, consumer, token)
 
+    @staticmethod
     def from_request(http_method, http_url, headers=None, parameters=None, query_string=None):
         # combine multiple parameter sources
         if parameters is None:
@@ -219,8 +231,7 @@ class OAuthRequest(object):
 
         return None
 
-    from_request = staticmethod(from_request)
-
+    @staticmethod
     def from_consumer_and_token(oauth_consumer, token=None, http_method=HTTP_METHOD, http_url=None, parameters=None):
         if not parameters:
             parameters = {}
@@ -240,8 +251,7 @@ class OAuthRequest(object):
 
         return OAuthRequest(http_method, http_url, parameters)
 
-    from_consumer_and_token = staticmethod(from_consumer_and_token)
-
+    @staticmethod
     def from_token_and_callback(token, callback=None, http_method=HTTP_METHOD, http_url=None, parameters=None):
         if not parameters:
             parameters = {}
@@ -253,7 +263,6 @@ class OAuthRequest(object):
 
         return OAuthRequest(http_method, http_url, parameters)
 
-    from_token_and_callback = staticmethod(from_token_and_callback)
 
     # util function: turn Authorization: header into parameters, has to do some unescaping
     def _split_header(header):
@@ -524,14 +533,9 @@ class OAuthSignatureMethod_HMAC_SHA1(OAuthSignatureMethod):
     def build_signature(self, oauth_request, consumer, token):
         # build the base signature string
         key, raw = self.build_signature_base_string(oauth_request, consumer, token)
-
-        # hmac object
-        try:
-            import hashlib  # 2.5
-            hashed = hmac.new(key, raw, hashlib.sha1)
-        except:
-            import sha  # deprecated
-            hashed = hmac.new(key, raw, sha)
+        key = bytes(key, 'ascii')
+        raw = bytes(raw, 'ascii')
+        hashed = hmac.new(key, raw, hashlib.sha1)
 
         # calculate the digest base 64
         return binascii.b2a_base64(hashed.digest())[:-1]

@@ -112,19 +112,18 @@ class HttpClient(atom.http_interface.GenericHttpClient):
             return self.v2_http_client.request(http_request=http_request)
 
         if not isinstance(url, atom.url.Url):
-            if isinstance(url, (str,)):
+            if isinstance(url, str):
                 url = atom.url.parse_url(url)
             else:
-                raise atom.http_interface.UnparsableUrlObject('Unable to parse url '
-                                                              'parameter because it was not a string or atom.url.Url')
+                raise atom.http_interface.UnparsableUrlObject('Unable to parse url parameter because it was not a string or atom.url.Url')
 
         connection = self._prepare_connection(url, all_headers)
 
         if self.debug:
             connection.debuglevel = 1
 
-        connection.putrequest(operation, self._get_access_url(url),
-                              skip_host=True)
+        connection.putrequest(operation, self._get_access_url(url), skip_host=True)
+
         if url.port is not None:
             connection.putheader('Host', '%s:%s' % (url.host, url.port))
         else:

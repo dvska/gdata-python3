@@ -34,16 +34,7 @@ from functools import wraps
 
 # __author__ = 'api.jscudder (Jeffrey Scudder)'
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    try:
-        import cElementTree as ElementTree
-    except ImportError:
-        try:
-            from xml.etree import ElementTree
-        except ImportError:
-            from elementtree import ElementTree
+import lxml.etree as ElementTree
 import warnings
 
 # XML namespaces which are often used in Atom entities.
@@ -334,7 +325,7 @@ class AtomBase(ExtensionContainer):
         not be called on instances of AtomBase.
 
         """
-        new_child = ElementTree.Element('')
+        new_child = ElementTree.Element('tag__')
         tree.append(new_child)
         new_child.tag = '{%s}%s' % (self.__class__._namespace,
                                     self.__class__._tag)
@@ -353,7 +344,7 @@ class AtomBase(ExtensionContainer):
         self._AddMembersToElementTree(new_tree)
         return new_tree
 
-    def ToString(self, string_encoding='UTF-8'):
+    def ToString(self, string_encoding=str):
         """Converts the Atom object to a string containing XML."""
         return ElementTree.tostring(self._ToElementTree(), encoding=string_encoding)
 
@@ -1350,7 +1341,7 @@ class ExtensionElement(object):
         self.text = text
 
     def ToString(self):
-        element_tree = self._TransferToElementTree(ElementTree.Element(''))
+        element_tree = self._TransferToElementTree(ElementTree.Element('tag__'))
         return ElementTree.tostring(element_tree, encoding="UTF-8")
 
     def _TransferToElementTree(self, element_tree):
@@ -1382,7 +1373,7 @@ class ExtensionElement(object):
           element_tree: ElementTree._Element The element to which this object's XML
               will be added.
         """
-        new_element = ElementTree.Element('')
+        new_element = ElementTree.Element('tag__')  # uh, uhm... empty tag name - sorry google, this is bogus? (c)https://github.com/lqc
         element_tree.append(new_element)
         self._TransferToElementTree(new_element)
 

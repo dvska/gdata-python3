@@ -9,20 +9,11 @@
 
 # # __author__ = 'api.laurabeth@gmail.com (Laura Beth Lincoln)'
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    try:
-        import cElementTree as ElementTree
-    except ImportError:
-        try:
-            from xml.etree import ElementTree
-        except ImportError:
-            from elementtree import ElementTree
 import string
 
 import atom
 import gdata
+import lxml.etree as ElementTree
 
 # XML namespaces which are often used in Google Spreadsheets entities.
 GSPREADSHEETS_NAMESPACE = 'http://schemas.google.com/spreadsheets/2006'
@@ -114,10 +105,8 @@ class Custom(atom.AtomBase):
         self.extension_attributes = extension_attributes or {}
 
     def _BecomeChildElement(self, tree):
-        new_child = ElementTree.Element('')
+        new_child = ElementTree.Element('{%s}%s' % (self.__class__._namespace, self.name))
         tree.append(new_child)
-        new_child.tag = '{%s}%s' % (self.__class__._namespace,
-                                    self.column)
         self._AddMembersToElementTree(new_child)
 
     def _ToElementTree(self):
@@ -127,7 +116,7 @@ class Custom(atom.AtomBase):
         return new_tree
 
     def _HarvestElementTree(self, tree):
-        namespace_uri, local_tag = string.split(tree.tag[1:], "}", 1)
+        namespace_uri, local_tag = tree.tag[1:].split("}", 1)
         self.column = local_tag
         # Fill in the instance members from the contents of the XML tree.
         for child in tree:

@@ -137,7 +137,7 @@ class BatchFeedTest(unittest.TestCase):
         self.assertEqual(len(new_feed.entry), 4)
         for entry in new_feed.entry:
             self.assertTrue(isinstance(entry, gdata.BatchEntry))
-        self.assertEqual(new_feed.title.text, 'My Batch Feed')
+        self.assertEqual(new_feed.title.text, b'My Batch Feed')
 
     def testConvertResultFeed(self):
         batch_feed = gdata.BatchFeedFromString(test_data.BATCH_FEED_RESULT)
@@ -162,7 +162,7 @@ class BatchFeedTest(unittest.TestCase):
                 self.assertEqual(entry.batch_id.text, 'itemB')
                 self.assertEqual(entry.batch_status.code, '201')
                 self.assertEqual(entry.batch_status.reason, 'Created')
-        self.assertEqual(new_feed.title.text, 'My Batch')
+        self.assertEqual(new_feed.title.text, b'My Batch')
 
     def testAddBatchEntry(self):
         try:

@@ -36,7 +36,7 @@ class AuthorTest(unittest.TestCase):
         self.assertTrue(self.author.name.text == 'Jeff Scudder')
         new_author = atom.AuthorFromString(self.author.ToString())
         self.assertTrue(len(self.author.extension_elements) == 1)
-        self.assertTrue(new_author.name.text == 'Jeff Scudder')
+        self.assertTrue(new_author.name.text == b'Jeff Scudder')
 
     def testEmptyAuthorToAndFromStringShouldMatch(self):
         string_from_author = self.author.ToString()
@@ -59,8 +59,8 @@ class AuthorTest(unittest.TestCase):
         self.assertTrue(self.author.extension_attributes['foo1'] == 'bar')
         self.assertTrue(self.author.extension_attributes['foo2'] == 'rab')
         new_author = atom.AuthorFromString(self.author.ToString())
-        self.assertTrue(new_author.extension_attributes['foo1'] == 'bar')
-        self.assertTrue(new_author.extension_attributes['foo2'] == 'rab')
+        self.assertTrue(new_author.extension_attributes['foo1'] == b'bar')
+        self.assertTrue(new_author.extension_attributes['foo2'] == b'rab')
 
     def testConvertFullAuthorToAndFromString(self):
         author = atom.AuthorFromString(test_data.TEST_AUTHOR)
@@ -102,7 +102,7 @@ class NameTest(unittest.TestCase):
         self.name.extension_attributes['foo'] = 'bar'
         self.assertTrue(self.name.extension_attributes['foo'] == 'bar')
         new_name = atom.NameFromString(self.name.ToString())
-        self.assertTrue(new_name.extension_attributes['foo'] == 'bar')
+        self.assertTrue(new_name.extension_attributes['foo'] == b'bar')
 
 
 class ExtensionElementTest(unittest.TestCase):
@@ -197,8 +197,8 @@ class TitleTest(unittest.TestCase):
         self.assertTrue(self.title.type == 'text')
         self.assertTrue(self.title.text == 'Less: &lt;')
         new_title = atom.TitleFromString(self.title.ToString())
-        self.assertTrue(self.title.type == new_title.type)
-        self.assertTrue(self.title.text == new_title.text)
+        self.assertTrue(self.title.type.encode() == new_title.type)
+        self.assertTrue(self.title.text.encode() == new_title.text)
 
 
 class SubtitleTest(unittest.TestCase):
@@ -225,8 +225,8 @@ class SummaryTest(unittest.TestCase):
         self.assertTrue(self.summary.type == 'text')
         self.assertTrue(self.summary.text == 'Less: &lt;')
         new_summary = atom.SummaryFromString(self.summary.ToString())
-        self.assertTrue(self.summary.type == new_summary.type)
-        self.assertTrue(self.summary.text == new_summary.text)
+        self.assertTrue(self.summary.type.encode() == new_summary.type)
+        self.assertTrue(self.summary.text.encode() == new_summary.text)
 
 
 class CategoryTest(unittest.TestCase):
@@ -318,7 +318,7 @@ class UpdatedTest(unittest.TestCase):
         self.updated.text = 'my time'
         self.assertTrue(self.updated.text == 'my time')
         new_updated = atom.UpdatedFromString(self.updated.ToString())
-        self.assertTrue(self.updated.text == new_updated.text)
+        self.assertTrue(self.updated.text.encode() == new_updated.text)
 
 
 class PublishedTest(unittest.TestCase):
@@ -404,7 +404,7 @@ class DraftTest(unittest.TestCase):
         self.assertEqual(draft.text, 'maybe')
         self.assertEqual(draft.extension_attributes['foo'], 'bar')
         new_draft = atom.DraftFromString(str(draft))
-        self.assertEqual(draft.text, new_draft.text)
+        self.assertEqual(draft.text.encode(), new_draft.text)
         self.assertEqual(draft.extension_attributes['foo'],
                          new_draft.extension_attributes['foo'])
 

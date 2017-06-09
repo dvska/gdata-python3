@@ -29,16 +29,7 @@ __version__ = '$Revision: 164 $'[11:-2]
 
 import re
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    try:
-        import cElementTree as ElementTree
-    except ImportError:
-        try:
-            from xml.etree import ElementTree
-        except ImportError:
-            from elementtree import ElementTree
+import lxml.etree as ElementTree
 import atom
 import gdata
 

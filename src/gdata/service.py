@@ -55,16 +55,7 @@ import urllib.parse
 import urllib.parse
 import urllib.request
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    try:
-        import cElementTree as ElementTree
-    except ImportError:
-        try:
-            from xml.etree import ElementTree
-        except ImportError:
-            from elementtree import ElementTree
+import lxml.etree as ElementTree
 import atom.service
 import gdata
 import atom

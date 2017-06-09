@@ -14,12 +14,17 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+import os
+import sys
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../src'))
+
 import gdata.auth
 
-CONSUMER_KEY = 'www.yourwebapp.com'
-CONSUMER_SECRET = 'qB1P2kCFDpRjF+/Iww4'
+CONSUMER_KEY = b'www.yourwebapp.com'
+CONSUMER_SECRET = b'qB1P2kCFDpRjF+/Iww4'
 
-RSA_KEY = """-----BEGIN RSA PRIVATE KEY-----
+RSA_KEY = b"""-----BEGIN RSA PRIVATE KEY-----
 MIICXAIBAAKBgQDVbOaFW+KXecfFJn1PIzYHnNXFxhaQ36QM0K5uSb0Y8NeQUlD2
 6t8aKgnm6mcb4vaopHjjdIGWgAzM5Dt0oPIiDXo+jSQbvCIXRduuAt+0cFGb2d+L
 hALk4AwB8IVIkDJWwgo5Z2OLsP2r/wQlUYKm/tnvQaevK24jNYMLWVJl2QIDAQAB

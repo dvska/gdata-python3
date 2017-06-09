@@ -186,7 +186,7 @@ class HttpRequest(object):
                      to 'application/x-www-form-urlencoded'.
         """
         body = urllib.parse.urlencode(form_data)
-        self.add_body_part(body, mime_type)
+        self.add_body_part(body, bytes(mime_type, 'ascii'))
 
     AddFormInputs = add_form_inputs
 

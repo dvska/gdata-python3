@@ -13,16 +13,7 @@
 # __author__ = ('api.stephaniel@gmail.com (Stephanie Liu), '
 #              ', api.jhartmann@gmail.com (Jochen Hartmann)')
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    try:
-        import cElementTree as ElementTree
-    except ImportError:
-        try:
-            from xml.etree import ElementTree
-        except ImportError:
-            from elementtree import ElementTree
+import lxml.etree as ElementTree
 import os
 
 import atom

@@ -22,16 +22,7 @@
 
 import inspect
 
-try:
-    from xml.etree import cElementTree as ElementTree
-except ImportError:
-    try:
-        import cElementTree as ElementTree
-    except ImportError:
-        try:
-            from xml.etree import ElementTree
-        except ImportError:
-            from elementtree import ElementTree
+import lxml.etree as ElementTree
 
 try:
     from xml.dom.minidom import parseString as xmlString
@@ -295,12 +286,12 @@ class XmlElement(object):
         if tree.text:
             self.text = tree.text
 
-    def _to_tree(self, version=1, encoding=None):
+    def _to_tree(self, version=1):
         new_tree = ElementTree.Element(_get_qname(self, version))
-        self._attach_members(new_tree, version, encoding)
+        self._attach_members(new_tree, version)
         return new_tree
 
-    def _attach_members(self, tree, version=1, encoding=None):
+    def _attach_members(self, tree, version=1):
         """Convert members to XML elements/attributes and add them to the tree.
 
         Args:
@@ -314,7 +305,7 @@ class XmlElement(object):
           encoding: str (optional)
         """
         qname, elements, attributes = self.__class__._get_rules(version)
-        encoding = encoding or STRING_ENCODING
+        encoding = STRING_ENCODING
         # Add the expected elements and attributes to the tree.
         if elements:
             for tag, element_def in elements.items():
@@ -348,7 +339,7 @@ class XmlElement(object):
     def to_string(self, version=1, encoding=None, pretty_print=None):
         """Converts this object to XML."""
 
-        tree_string = ElementTree.tostring(self._to_tree(version, encoding))
+        tree_string = ElementTree.tostring(self._to_tree(version))
 
         if pretty_print and xmlString is not None:
             return xmlString(tree_string).toprettyxml()
@@ -362,7 +353,7 @@ class XmlElement(object):
 
     def _become_child(self, tree, version=1):
         """Adds a child element to tree with the XML data in self."""
-        new_child = ElementTree.Element('')
+        new_child = ElementTree.Element(_get_qname(self, version))
         tree.append(new_child)
         new_child.tag = _get_qname(self, version)
         self._attach_members(new_child, version)
@@ -497,11 +488,11 @@ def _qname_matches(tag, namespace, qname):
                 and member_namespace is None))
 
 
-def parse(xml_string, target_class=None, version=1, encoding=None):
+def parse(xml_string, target_class=None, version=1):
     """Parses the XML string according to the rules for the target_class.
 
     Args:
-      xml_string: str or unicode
+      xml_string: bytes
       target_class: XmlElement or a subclass. If None is specified, the
           XmlElement class is used.
       version: int (optional) The version of the schema which should be used when
@@ -511,11 +502,8 @@ def parse(xml_string, target_class=None, version=1, encoding=None):
     """
     if target_class is None:
         target_class = XmlElement
-    if isinstance(xml_string, str):
-        if encoding is None:
-            xml_string = xml_string.encode(STRING_ENCODING)
-        else:
-            xml_string = xml_string.encode(encoding)
+    if not isinstance(xml_string, bytes):
+        raise Exception("This function only accepts bytes")
     tree = ElementTree.fromstring(xml_string)
     return _xml_element_from_tree(tree, target_class, version)
 
