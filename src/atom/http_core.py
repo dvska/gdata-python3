@@ -115,7 +115,7 @@ class HttpRequest(object):
           size: int Required if the data is a file like object. If the data is a
                 string, the size is calculated so this parameter is ignored.
         """
-        if isinstance(data, str):
+        if hasattr(data, '__len__'):
             size = len(data)
         if size is None:
             # TODO: support chunked transfer if some of the body is of unknown size.
