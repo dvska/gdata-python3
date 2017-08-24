@@ -510,7 +510,7 @@ def _send_data_part(data, connection):
         # Read the file and send it a chunk at a time.
         while 1:
             binarydata = data.read(100000)
-            if binarydata == '': break
+            if binarydata == b'': break
             connection.send(binarydata)
     else:
         # The data object was not a file.
