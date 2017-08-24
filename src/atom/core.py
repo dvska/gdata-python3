@@ -344,7 +344,7 @@ class XmlElement(object):
         if pretty_print and xmlString is not None:
             return xmlString(tree_string).toprettyxml()
 
-        return tree_string
+        return tree_string.decode('utf-8')
 
     ToString = to_string
 
