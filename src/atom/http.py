@@ -332,7 +332,7 @@ def _get_proxy_net_location(proxy_settings):
 
 
 def _send_data_part(data, connection):
-    if isinstance(data, (str,)):
+    if isinstance(data, (str, bytes)):
         connection.send(data)
         return
     # Check to see if data is a file-like object that has a read method.
