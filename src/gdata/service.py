@@ -748,7 +748,7 @@ class GDataService(atom.service.AtomService):
             auth_request_url = self.auth_service_url
 
         auth_response = self.http_client.request('POST', auth_request_url,
-                                                 data=request_body,
+                                                 data=request_body.encode(),
                                                  headers={'Content-Type': 'application/x-www-form-urlencoded'})
         response_body = auth_response.read()
 
