@@ -162,7 +162,7 @@ class OAuth2RevokeError(Error):
 
         self.error_msg = 'Invalid response %s.' % self.status
         try:
-            json_from_body = simplejson.loads(body)
+            json_from_body = simplejson.loads(body.decode('utf-8'))
             if isinstance(json_from_body, dict):
                 self.error_msg = json_from_body.get('error', self.error_msg)
         except (ValueError, JSONDecodeError):
@@ -1198,7 +1198,7 @@ class OAuth2Token(object):
         return response
 
     def _extract_tokens(self, body):
-        d = simplejson.loads(body)
+        d = simplejson.loads(body.decode('utf-8'))
         self.access_token = d['access_token']
         self.refresh_token = d.get('refresh_token', self.refresh_token)
         if 'expires_in' in d:
@@ -1285,7 +1285,7 @@ class OAuth2Token(object):
         else:
             error_msg = 'Invalid response %s.' % response.status
             try:
-                d = simplejson.loads(body)
+                d = simplejson.loads(body.decode('utf-8'))
                 if 'error' in d:
                     error_msg = d['error']
             except:
