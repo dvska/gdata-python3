@@ -7,7 +7,7 @@
 import sys
 from distutils.core import setup
 
-required = ['tlslite', 'lxml']
+required = ['tlslite-ng', 'lxml']
 
 if sys.version_info[:3] < (2, 9, 0):
     raise NotImplemented('Python 3.5+ required, bye-bye')
