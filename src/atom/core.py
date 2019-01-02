@@ -502,8 +502,8 @@ def parse(xml_string, target_class=None, version=1):
     """
     if target_class is None:
         target_class = XmlElement
-    if not isinstance(xml_string, bytes):
-        raise Exception("This function only accepts bytes")
+    if not isinstance(xml_string, str):
+        raise Exception("This function only accepts string")
     tree = ElementTree.fromstring(xml_string)
     return _xml_element_from_tree(tree, target_class, version)
 
