@@ -492,7 +492,7 @@ def parse(xml_string, target_class=None, version=1):
     """Parses the XML string according to the rules for the target_class.
 
     Args:
-      xml_string: bytes
+      xml_string: bytes / string
       target_class: XmlElement or a subclass. If None is specified, the
           XmlElement class is used.
       version: int (optional) The version of the schema which should be used when
@@ -502,8 +502,8 @@ def parse(xml_string, target_class=None, version=1):
     """
     if target_class is None:
         target_class = XmlElement
-    if not isinstance(xml_string, str):
-        raise Exception("This function only accepts string")
+    if not (isinstance(xml_string, bytes) or isinstance(xml_string, str)):
+        raise Exception("This function only accepts bytes or str")
     tree = ElementTree.fromstring(xml_string)
     return _xml_element_from_tree(tree, target_class, version)
 
