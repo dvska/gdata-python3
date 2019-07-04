@@ -2,14 +2,25 @@
 
 ### Install
 
-`pip install -e git+https://github.com/dvska/gdata-python3#egg=gdata`
-or
-`sudo python setup.py install`
+    pip install -e git+https://github.com/dvska/gdata-python3#egg=gdata
+    
+    OR
+     
+    sudo python setup.py install
 
 
 ### Running Tests and Samples
 
-python ./tests/run_data_tests.py
+    python ./tests/run_data_tests.py
+
+
+### Install from PyPi
+    pip install gdata-python3
+    
+    OR
+    
+    pip3 install gdata-python3
+
 
 
  --------------------------------------------------------
