@@ -346,5 +346,5 @@ def _send_data_part(data, connection):
     else:
         # The data object was not a file.
         # Try to convert to a string and send the data.
-        connection.send(str(data))
+        connection.send(str(data).encode('utf-8'))
         return
