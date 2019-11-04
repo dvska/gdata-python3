@@ -9,8 +9,7 @@
   MigrationService: Provides methods to import mail.
 """
 
-# __author__ = ('google-apps-apis@googlegroups.com',
-              'pti@google.com (Prashant Tiwari)')
+# __author__ = ('google-apps-apis@googlegroups.com', 'pti@google.com (Prashant Tiwari)')
 
 import base64
 import threading
