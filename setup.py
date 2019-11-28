@@ -46,7 +46,7 @@ library with any Google data API (even if a module hasn't been written for
 it yet). For example, this client can be used with the Notebook API. This
 library may also be used with any Atom Publishing Protocol service (AtomPub).
 """,
-      author='Jeffrey Scudder',
+      author='Jeffrey Scudder & contributors',
       author_email='j.s@google.com',
       license='Apache 2.0',
       url='https://github.com/dvska/gdata-python3',
@@ -90,6 +90,7 @@ library may also be used with any Atom Publishing Protocol service (AtomPub).
           'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
           'Programming Language :: Python :: 3.7',
+          'Programming Language :: Python :: 3.8',
       ],
       install_requires=required
       )
