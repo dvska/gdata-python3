@@ -763,6 +763,7 @@ class Organization(atom.core.XmlElement):
     name = OrgName
     symbol = OrgSymbol
     title = OrgTitle
+    where = Where
 
 
 class When(atom.core.XmlElement):
