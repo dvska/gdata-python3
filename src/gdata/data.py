@@ -749,6 +749,26 @@ class OrgTitle(atom.core.XmlElement):
     _qname = GDATA_TEMPLATE % 'orgTitle'
 
 
+class Where(atom.core.XmlElement):
+    """The gd:where element.
+
+    A place (such as an event location) associated with the containing
+    entity. The type of the association is determined by the rel attribute;
+    the details of the location are contained in an embedded or linked-to
+    Contact entry.
+
+    A <gd:where> element is more general than a <gd:geoPt> element. The
+    former identifies a place using a text description and/or a Contact
+    entry, while the latter identifies a place using a specific geographic
+    location.
+    """
+    _qname = GDATA_TEMPLATE % 'where'
+    label = 'label'
+    rel = 'rel'
+    value = 'valueString'
+    entry_link = EntryLink    
+
+
 class Organization(atom.core.XmlElement):
     """The gd:organization element.
 
@@ -1077,26 +1097,6 @@ class StructuredPostalAddress(atom.core.XmlElement):
     postcode = Postcode
     country = Country
     formatted_address = FormattedAddress
-
-
-class Where(atom.core.XmlElement):
-    """The gd:where element.
-
-    A place (such as an event location) associated with the containing
-    entity. The type of the association is determined by the rel attribute;
-    the details of the location are contained in an embedded or linked-to
-    Contact entry.
-
-    A <gd:where> element is more general than a <gd:geoPt> element. The
-    former identifies a place using a text description and/or a Contact
-    entry, while the latter identifies a place using a specific geographic
-    location.
-    """
-    _qname = GDATA_TEMPLATE % 'where'
-    label = 'label'
-    rel = 'rel'
-    value = 'valueString'
-    entry_link = EntryLink
 
 
 class AttendeeType(atom.core.XmlElement):
