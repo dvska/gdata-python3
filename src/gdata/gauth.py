@@ -653,6 +653,11 @@ def generate_hmac_signature(http_request, consumer_key, consumer_secret,
                               urllib.parse.quote(token_secret, safe='~'))
     else:
         hash_key = '%s&' % urllib.parse.quote(consumer_secret, safe='~')
+    # hmac needs hash_key as bytes or bytearray
+    hash_key = hash_key.encode()
+    # hmac is doing update in new method for msg we are passing so needed to
+    # convert it into bytes.
+    base_string = base_string.encode()
     try:
         import hashlib
         hashed = hmac.new(hash_key, base_string, hashlib.sha1)
@@ -1016,11 +1021,11 @@ class OAuthHmacToken(object):
         nonce = ''.join([str(random.randint(0, 9)) for i in range(15)])
         signature = generate_hmac_signature(
             http_request, self.consumer_key, self.consumer_secret, timestamp,
-            nonce, version='1.0', next=self.__next__, token=self.token,
+            nonce, version='1.0', next=self.next, token=self.token,
             token_secret=self.token_secret, verifier=self.verifier)
         http_request.headers['Authorization'] = generate_auth_header(
             self.consumer_key, timestamp, nonce, HMAC_SHA1, signature,
-            version='1.0', next=self.__next__, token=self.token,
+            version='1.0', next=self.next, token=self.token,
             verifier=self.verifier)
         return http_request
 
@@ -1054,11 +1059,11 @@ class OAuthRsaToken(OAuthHmacToken):
         nonce = ''.join([str(random.randint(0, 9)) for i in range(15)])
         signature = generate_rsa_signature(
             http_request, self.consumer_key, self.rsa_private_key, timestamp,
-            nonce, version='1.0', next=self.__next__, token=self.token,
+            nonce, version='1.0', next=self.next, token=self.token,
             token_secret=self.token_secret, verifier=self.verifier)
         http_request.headers['Authorization'] = generate_auth_header(
             self.consumer_key, timestamp, nonce, RSA_SHA1, signature,
-            version='1.0', next=self.__next__, token=self.token,
+            version='1.0', next=self.next, token=self.token,
             verifier=self.verifier)
         return http_request
 
@@ -1534,12 +1539,12 @@ def token_to_blob(token):
     elif isinstance(token, OAuthRsaToken):
         return _join_token_parts(
             '1r', token.consumer_key, token.rsa_private_key, token.token,
-            token.token_secret, str(token.auth_state), token.__next__,
+            token.token_secret, str(token.auth_state), token.next,
             token.verifier)
     elif isinstance(token, OAuthHmacToken):
         return _join_token_parts(
             '1h', token.consumer_key, token.consumer_secret, token.token,
-            token.token_secret, str(token.auth_state), token.__next__,
+            token.token_secret, str(token.auth_state), token.next,
             token.verifier)
     elif isinstance(token, OAuth2Token):
         return _join_token_parts(
