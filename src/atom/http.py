@@ -92,6 +92,7 @@ class HttpClient(atom.http_interface.GenericHttpClient):
         # If the list of headers does not include a Content-Length, attempt to
         # calculate it based on the data object.
         if data and 'Content-Length' not in all_headers:
+            # TODO check any possibility of bytes here.
             if isinstance(data, (str,)):
                 all_headers['Content-Length'] = str(len(data))
             else:
