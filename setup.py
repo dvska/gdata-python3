@@ -13,7 +13,7 @@ if sys.version_info[:3] < (2, 9, 0):
     raise NotImplemented('Python 3.5+ required, bye-bye')
 
 setup(name='gdata',
-      version='4.0.0',
+      version='4.0.1',
       description='Python client library for Google data APIs',
       long_description="""\
 The Google data Python client library makes it easy to interact with
