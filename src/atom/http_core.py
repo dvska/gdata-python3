@@ -552,11 +552,11 @@ class ProxiedHttpClient(HttpClient):
             # Connect to the proxy server, very simple recv and error checking
             p_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             p_sock.connect((proxy_uri.host, int(proxy_uri.port)))
-            p_sock.sendall(proxy_pieces)
+            p_sock.sendall(proxy_pieces.encode('utf-8'))
             response = ''
             # Wait for the full response.
             while response.find("\r\n\r\n") == -1:
-                response += p_sock.recv(8192)
+                response += p_sock.recv(8192).decode('utf-8')
             p_status = response.split()[1]
             if p_status != str(200):
                 raise ProxyError('Error status=%s' % str(p_status))
