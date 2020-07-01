@@ -195,7 +195,7 @@ class TokensToAndFromBlobsTest(unittest.TestCase):
         self.assertEqual(copy.token, token.token)
         self.assertEqual(copy.token_secret, token.token_secret)
         self.assertEqual(copy.auth_state, token.auth_state)
-        self.assertEqual(copy.__next__, token.__next__)
+        self.assertEqual(copy.next, token.next)
         self.assertEqual(copy.verifier, token.verifier)
 
         token = gdata.gauth.OAuthRsaToken(
@@ -210,8 +210,8 @@ class TokensToAndFromBlobsTest(unittest.TestCase):
         self.assertEqual(copy.token, token.token)
         self.assertEqual(copy.token_secret, token.token_secret)
         self.assertEqual(copy.auth_state, token.auth_state)
-        self.assertEqual(copy.__next__, token.__next__)
-        self.assertTrue(copy.__next__ is None)
+        self.assertEqual(copy.next, token.next)
+        self.assertTrue(copy.next is None)
         self.assertEqual(copy.verifier, token.verifier)
         self.assertTrue(copy.verifier is None)
 
@@ -227,8 +227,8 @@ class TokensToAndFromBlobsTest(unittest.TestCase):
         self.assertEqual(copy.token, token.token)
         self.assertEqual(copy.token_secret, token.token_secret)
         self.assertEqual(copy.auth_state, token.auth_state)
-        self.assertEqual(copy.__next__, token.__next__)
-        self.assertTrue(copy.__next__ is None)
+        self.assertEqual(copy.next, token.next)
+        self.assertTrue(copy.next is None)
         self.assertEqual(copy.verifier, token.verifier)
 
     def test_oauth_hmac_conversion(self):
@@ -246,7 +246,7 @@ class TokensToAndFromBlobsTest(unittest.TestCase):
         self.assertEqual(copy.token, token.token)
         self.assertEqual(copy.token_secret, token.token_secret)
         self.assertEqual(copy.auth_state, token.auth_state)
-        self.assertEqual(copy.__next__, token.__next__)
+        self.assertEqual(copy.next, token.next)
         self.assertEqual(copy.verifier, token.verifier)
 
         token = gdata.gauth.OAuthHmacToken(
@@ -262,8 +262,8 @@ class TokensToAndFromBlobsTest(unittest.TestCase):
         self.assertEqual(copy.token, token.token)
         self.assertEqual(copy.token_secret, token.token_secret)
         self.assertEqual(copy.auth_state, token.auth_state)
-        self.assertEqual(copy.__next__, token.__next__)
-        self.assertTrue(copy.__next__ is None)
+        self.assertEqual(copy.next, token.next)
+        self.assertTrue(copy.next is None)
         self.assertEqual(copy.verifier, token.verifier)
 
     def test_oauth2_conversion(self):
