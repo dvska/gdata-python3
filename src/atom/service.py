@@ -39,6 +39,7 @@ import atom
 
 class AtomService(object):
     """Performs Atom Publishing Protocol CRUD operations.
+    #CRUD operation stands for create,read,update and delete
 
     The AtomService contains methods to perform HTTP CRUD operations.
     """
