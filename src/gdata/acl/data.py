@@ -8,32 +8,32 @@
 
 # __author__ = 'j.s@google.com (Jeff Scudder)'
 
-import atom.data
-import gdata.opensearch.data
+from atom.core import XmlElement
+from gdata.data import GDEntry, GDFeed
 
 GACL_TEMPLATE = '{http://schemas.google.com/acl/2007}%s'
 
 
-class AclRole(atom.core.XmlElement):
+class AclRole(XmlElement):
     """Describes the role of an entry in an access control list."""
     _qname = GACL_TEMPLATE % 'role'
     value = 'value'
 
 
-class AclAdditionalRole(atom.core.XmlElement):
+class AclAdditionalRole(XmlElement):
     """Describes an additionalRole element."""
     _qname = GACL_TEMPLATE % 'additionalRole'
     value = 'value'
 
 
-class AclScope(atom.core.XmlElement):
+class AclScope(XmlElement):
     """Describes the scope of an entry in an access control list."""
     _qname = GACL_TEMPLATE % 'scope'
     type = 'type'
     value = 'value'
 
 
-class AclWithKey(atom.core.XmlElement):
+class AclWithKey(XmlElement):
     """Describes a key that can be used to access a document."""
     _qname = GACL_TEMPLATE % 'withKey'
     key = 'key'
@@ -41,7 +41,7 @@ class AclWithKey(atom.core.XmlElement):
     additional_role = AclAdditionalRole
 
 
-class AclEntry(gdata.data.GDEntry):
+class AclEntry(GDEntry):
     """Describes an entry in a feed of an access control list (ACL)."""
     scope = AclScope
     role = AclRole
@@ -49,6 +49,6 @@ class AclEntry(gdata.data.GDEntry):
     additional_role = AclAdditionalRole
 
 
-class AclFeed(gdata.data.GDFeed):
+class AclFeed(GDFeed):
     """Describes a feed of an access control list (ACL)."""
     entry = [AclEntry]
